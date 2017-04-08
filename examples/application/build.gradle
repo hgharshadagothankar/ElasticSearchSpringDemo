@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'docker'
+
+buildscript {
+    repositories { mavenLocal(); jcenter() }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.3-SNAPSHOT'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
+
+sourceCompatibility = 1.7
+group = 'example'
+version = '1.0'
+mainClassName = 'se.transmode.example.docker.JettyMain'
+
+repositories { jcenter() }
+dependencies {
+    compile 'org.eclipse.jetty.aggregate:jetty-all:9.0.6.v20130930'
+}
+
+distDocker {
+    dockerfile {
+        expose 8080
+    }
+    dryRun = true
+}
